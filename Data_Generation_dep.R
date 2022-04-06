@@ -36,14 +36,14 @@ gc_N <- gcm_N + gcp_N
 
 #X
 e <- rnorm(N)
-X_N <- round(log(3) *(gm_N - mean(gm_N)) + e)
+X_N <- round(log(1.5) *(gm_N - mean(gm_N)) + e)
 X_N = pmin(pmax(X_N,-2),2)
 
 #beta
 beta1 <- log(1.8)    #gm
 beta2 <- log(1.5)    #gc
 beta3 <- log(1)      #no imprinting
-beta4 <- log(1.8)    #X
+beta4 <- log(1.2)    #X
 beta5 <- log(1.2)    #gm X
 beta6 <- log(1.2)    #gc X
 beta <- c(0,beta1,beta2,beta3,beta4,beta5,beta6)
@@ -82,6 +82,8 @@ n <- n0 + n1
 fitCMCM = function(...)
 {
   library(SPmlficmcm)
+  library(Haplin)
+  source("genDataRead.R")
   case <- sample(1:N1, n1, replace = FALSE)
   control <- sample(1:N0, n0, replace = FALSE)
   gm <- c(gm_N[Y_N == 1][case],gm_N[Y_N == 0][control])
@@ -104,7 +106,27 @@ fitCMCM = function(...)
    		fit2.sd = fit2[["MatR"]][, 2]
    	}
    }
-  return(c(fit$est,fit$sd,fit1$est,fit1$sd,fit2.est,fit2.sd,fit$est.log,fit$sd.log))
+  # Processing data for Haplin
+  gmf = factor(c(NA,gm))
+  levels(gmf)=c("AA","AC","CC")
+  gcf = factor(c(NA,gc))
+  levels(gcf)=c("AA","AC","CC")
+  gff = rep(NA,length(gcf))
+
+  dath = data.frame(Y=c(0,Y),X=c(0,X+2),gm=gmf,gf=gff,gc=gcf)
+  datf = file()
+  write.table(dath,datf,row.names=F,col.names=F,quote=F)
+
+  haplin.data.test <- genDataRead( file.in = datf, file.out = "test",format = "haplin", allele.sep = "", n.vars = 2, cov.header = c("Y","X"),dir.out = tempdir( check = TRUE ),overwrite=T )
+
+  haplin.pre = genDataPreprocess( haplin.data.test, design="cc.triad",overwrite=T)
+
+  haplin.res = haplinStrat( haplin.pre, strata = 2, design = "cc.triad", maternal=T, ccvar = 1, use.missing=T, response="mult", reference=1,max.EM.iter = 100)
+  haplin.est = sapply(haplin.res,function(obj)coef(obj$result$result)) 
+  haplin.sd = sapply(haplin.res,function(obj) sqrt(diag(obj$var.cov$var.cov)))
+  haplin.gxe = gxe(haplin.res)
+
+  return(c(fit$est,fit$sd,fit1$est,fit1$sd,fit2.est,fit2.sd,haplin.est,haplin.sd,fit$est.log,fit$sd.log,haplin.gxe=haplin.gxe$gxe.test[,4]))
 }
 EST = mclapply(1:500,fitCMCM,mc.cores = cores)
 CMCM.dep01.res <- do.call(cbind, EST)

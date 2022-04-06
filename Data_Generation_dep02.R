@@ -1,5 +1,5 @@
-# Script to generate case-mother control-mother data with environmental exposure independent from maternal genotype 
-# and analyze the data with Spmlficmcm, CCMO.dep and CCMO.na
+# Script to generate case-mother control-mother data with environmental exposure depending on maternal genotype 
+# through a linear model and analyze the data with Spmlficmcm, CCMO.dep and CCMO.na
 
 # The results of this simulation are presented in Table 1 of the manuscript
 # Methods and software to analyze gene-environment interactions under a case-mother control-mother design with partially missing child genotype
@@ -36,7 +36,7 @@ gc_N <- gcm_N + gcp_N
 
 #X
 e <- rnorm(N)
-X_N <- round(e)
+X_N <- round(log(1.5) *(gm_N - mean(gm_N)) + e)
 X_N = pmin(pmax(X_N,-2),2)
 
 #beta
@@ -66,7 +66,7 @@ Y_N <- ifelse(r<p,1,0)
 
 #generate NA
 r <- runif(N)
-gc_N[r<0.05] <- NA
+gc_N[r<0.2] <- NA
 
 N1 <- sum(Y_N == 1)
 N0 <- N-N1
@@ -128,5 +128,5 @@ fitCMCM = function(...)
 
   return(c(fit$est,fit$sd,fit1$est,fit1$sd,fit2.est,fit2.sd,haplin.est,haplin.sd,fit$est.log,fit$sd.log,haplin.gxe=haplin.gxe$gxe.test[,4]))
 }
-EST = mclapply(1:500,fitCMCM,mc.cores = cores)
-CMCM.indep01.res <- do.call(cbind, EST)
+EST = mclapply(1:200,fitCMCM,mc.cores = cores)
+CMCM.dep02.res <- do.call(cbind, EST)
