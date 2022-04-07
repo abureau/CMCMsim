@@ -42,7 +42,7 @@ mean_se.dep01null.vec = apply(CMCM.dep01null.res[seind,],1,mean,na.rm=T)
 lower.bound = CMCM.dep01null.res[bind,] - qnorm(0.975)*CMCM.dep01null.res[seind,]
 upper.bound = CMCM.dep01null.res[bind,] + qnorm(0.975)*CMCM.dep01null.res[seind,]
 coverage.dep01null.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
-power.dep01null.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
+power.dep01null.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0| upper.bound[c(5:6,11:12,17:18,23:24),] < 0,1,mean,na.rm=T)
 
 # Haplin
 bias.dep01null.haplin.vec = apply(CMCM.dep01null.res[hind,],1,mean,na.rm=T) - hbeta.vec
@@ -74,7 +74,7 @@ mean_se.dep01nullMNAR.vec = apply(CMCM.dep01nullMNAR.res[seind,],1,mean,na.rm=T)
 lower.bound = CMCM.dep01nullMNAR.res[bind,] - qnorm(0.975)*CMCM.dep01nullMNAR.res[seind,]
 upper.bound = CMCM.dep01nullMNAR.res[bind,] + qnorm(0.975)*CMCM.dep01nullMNAR.res[seind,]
 coverage.dep01nullMNAR.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
-power.dep01nullMNAR.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
+power.dep01nullMNAR.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0| upper.bound[c(5:6,11:12,17:18,23:24),] < 0,1,mean,na.rm=T)
 
 # Haplin
 bias.dep01nullMNAR.haplin.vec = apply(CMCM.dep01nullMNAR.res[hind,],1,mean,na.rm=T) - hbeta.vec
@@ -107,7 +107,7 @@ mean_se.indep01null.vec = apply(CMCM.indep01null.res[seind,],1,mean,na.rm=T)
 lower.bound = CMCM.indep01null.res[bind,] - qnorm(0.975)*CMCM.indep01null.res[seind,]
 upper.bound = CMCM.indep01null.res[bind,] + qnorm(0.975)*CMCM.indep01null.res[seind,]
 coverage.indep01null.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
-power.indep01null.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
+power.indep01null.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0| upper.bound[c(5:6,11:12,17:18,23:24),] < 0,1,mean,na.rm=T)
 
 # Haplin
 bias.indep01null.haplin.vec = apply(CMCM.indep01null.res[hind,],1,mean,na.rm=T) - hbeta.vec
