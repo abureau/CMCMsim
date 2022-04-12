@@ -18,9 +18,34 @@ cores <- 20
 source("https://github.com/yatian20/CCMO.na/blob/main/R/CCMO.na.R?raw=true")
 source("https://github.com/yatian20/CCMO.na/blob/main/R/CCMO.dep.R?raw=true")
 
-#genotype
 N <- 2e5
 theta <- 0.2
+
+#beta
+beta1 <- log(1.8)    #gm
+beta2 <- log(1.5)    #gc
+beta3 <- log(1)      #no imprinting
+beta4 <- log(1.2)    #X
+beta5 <- log(1.2)    #gm X
+beta6 <- log(1.2)    #gc X
+beta <- c(0,beta1,beta2,beta3,beta4,beta5,beta6)
+
+n0 <- 1000
+n1 <- 1000
+n <- n0 + n1
+#lambda <- n1 / (n*f) - n0 / (n * (1-f))
+
+    fl <- Y ~ gm + gc + X + X:gm + X:gc
+
+#simulation
+
+fitCMCM = function(...)
+{
+  library(SPmlficmcm)
+  library(Haplin)
+  source("genDataRead.R")
+
+#genotype
 genotype <- rbind(c(0,0,(1-theta)^2),c(0,1,theta*(1-theta)),c(1,0,theta*(1-theta)),c(1,1,theta^2))
 mdip_N <- genotype[sample(1:4, N, replace = TRUE, prob = genotype[,3]),1:2]
 gm_N <- apply(mdip_N,1,sum)
@@ -38,15 +63,6 @@ gc_N <- gcm_N + gcp_N
 e <- rnorm(N)
 X_N <- round(e)
 X_N = pmin(pmax(X_N,-2),2)
-
-#beta
-beta1 <- log(1.8)    #gm
-beta2 <- log(1.5)    #gc
-beta3 <- log(1)      #no imprinting
-beta4 <- log(1.2)    #X
-beta5 <- log(1.2)    #gm X
-beta6 <- log(1.2)    #gc X
-beta <- c(0,beta1,beta2,beta3,beta4,beta5,beta6)
 
 # Disease prevalence
 f <- 0.01
@@ -70,20 +86,7 @@ gc_N[r<0.2] <- NA
 
 N1 <- sum(Y_N == 1)
 N0 <- N-N1
-n0 <- 1000
-n1 <- 1000
-n <- n0 + n1
-#lambda <- n1 / (n*f) - n0 / (n * (1-f))
 
-    fl <- Y ~ gm + gc + X + X:gm + X:gc
-
-#simulation
-
-fitCMCM = function(...)
-{
-  library(SPmlficmcm)
-  library(Haplin)
-  source("genDataRead.R")
   case <- sample(1:N1, n1, replace = FALSE)
   control <- sample(1:N0, n0, replace = FALSE)
   gm <- c(gm_N[Y_N == 1][case],gm_N[Y_N == 0][control])
@@ -128,5 +131,5 @@ fitCMCM = function(...)
 
   return(c(fit$est,fit$sd,fit1$est,fit1$sd,fit2.est,fit2.sd,haplin.est,haplin.sd,fit$est.log,fit$sd.log,haplin.gxe=haplin.gxe$gxe.test[,4]))
 }
-EST = mclapply(1:200,fitCMCM,mc.cores = cores)
+EST = mclapply(1:500,fitCMCM,mc.cores = cores)
 CMCM.indep02.res <- do.call(cbind, EST)

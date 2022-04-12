@@ -88,35 +88,35 @@ power.dep02.haplin.vec = apply(CMCM.dep02.res[nrow(CMCM.dep02.res)-1:0,]<0.05,1,
 
 # MNAR 20%
 # Proportion of missing beta before removing outliers
-missing.beta.dep01MNAR = apply(CMCM.dep01MNAR.res[bind,],1,function(vec) mean(is.na(vec)))
+missing.beta.dep02MNAR = apply(CMCM.dep02MNAR.res[bind,],1,function(vec) mean(is.na(vec)))
 
 ## Identifying outlying estimates
-par.mad <- apply(CMCM.dep01MNAR.res[bind,], 1, mad, na.rm=T)
-par.med <- apply(CMCM.dep01MNAR.res[bind,], 1, median, na.rm=T) 
-outliers.mat <- CMCM.dep01MNAR.res[bind,] < par.med - 3*sqrt(par.mad) | CMCM.dep01MNAR.res[bind,] > par.med + 3*sqrt(par.mad)
+par.mad <- apply(CMCM.dep02MNAR.res[bind,], 1, mad, na.rm=T)
+par.med <- apply(CMCM.dep02MNAR.res[bind,], 1, median, na.rm=T) 
+outliers.mat <- CMCM.dep02MNAR.res[bind,] < par.med - 3*sqrt(par.mad) | CMCM.dep02MNAR.res[bind,] > par.med + 3*sqrt(par.mad)
 apply(outliers.mat, 1, sum, na.rm=T)
 # Outliers are present only for prospective likelihood
 outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
 mean(outliers.vec)
 # Setting outlying estimates and their SE to NA
-CMCM.dep01MNAR.res[28:41,outliers.vec] = NA
+CMCM.dep02MNAR.res[28:41,outliers.vec] = NA
 
-bias.dep01MNAR.vec = apply(CMCM.dep01MNAR.res[bind,],1,mean,na.rm=T) - beta.vec
-emp_se.dep01MNAR.vec = apply(CMCM.dep01MNAR.res[bind,],1,sd,na.rm=T)
-mean_se.dep01MNAR.vec = apply(CMCM.dep01MNAR.res[seind,],1,mean,na.rm=T)
-lower.bound = CMCM.dep01MNAR.res[bind,] - qnorm(0.975)*CMCM.dep01MNAR.res[seind,]
-upper.bound = CMCM.dep01MNAR.res[bind,] + qnorm(0.975)*CMCM.dep01MNAR.res[seind,]
-coverage.dep01MNAR.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
-power.dep01MNAR.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
+bias.dep02MNAR.vec = apply(CMCM.dep02MNAR.res[bind,],1,mean,na.rm=T) - beta.vec
+emp_se.dep02MNAR.vec = apply(CMCM.dep02MNAR.res[bind,],1,sd,na.rm=T)
+mean_se.dep02MNAR.vec = apply(CMCM.dep02MNAR.res[seind,],1,mean,na.rm=T)
+lower.bound = CMCM.dep02MNAR.res[bind,] - qnorm(0.975)*CMCM.dep02MNAR.res[seind,]
+upper.bound = CMCM.dep02MNAR.res[bind,] + qnorm(0.975)*CMCM.dep02MNAR.res[seind,]
+coverage.dep02MNAR.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
+power.dep02MNAR.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
 
 # Haplin
-bias.dep01MNAR.haplin.vec = apply(CMCM.dep01MNAR.res[hind,],1,mean,na.rm=T) - hbeta.vec
-emp_se.dep01MNAR.haplin.vec = apply(CMCM.dep01MNAR.res[hind,],1,sd,na.rm=T)
-mean_se.dep01MNAR.haplin.vec = apply(CMCM.dep01MNAR.res[hseind,],1,mean,na.rm=T)
-lower.bound = CMCM.dep01MNAR.res[hind,] - qnorm(0.975)*CMCM.dep01MNAR.res[hseind,]
-upper.bound = CMCM.dep01MNAR.res[hind,] + qnorm(0.975)*CMCM.dep01MNAR.res[hseind,]
-coverage.dep01MNAR.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.dep01MNAR.haplin.vec = apply(CMCM.dep01MNAR.res[nrow(CMCM.dep01MNAR.res)-1:0,]<0.05,1,mean,na.rm=T)
+bias.dep02MNAR.haplin.vec = apply(CMCM.dep02MNAR.res[hind,],1,mean,na.rm=T) - hbeta.vec
+emp_se.dep02MNAR.haplin.vec = apply(CMCM.dep02MNAR.res[hind,],1,sd,na.rm=T)
+mean_se.dep02MNAR.haplin.vec = apply(CMCM.dep02MNAR.res[hseind,],1,mean,na.rm=T)
+lower.bound = CMCM.dep02MNAR.res[hind,] - qnorm(0.975)*CMCM.dep02MNAR.res[hseind,]
+upper.bound = CMCM.dep02MNAR.res[hind,] + qnorm(0.975)*CMCM.dep02MNAR.res[hseind,]
+coverage.dep02MNAR.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
+power.dep02MNAR.haplin.vec = apply(CMCM.dep02MNAR.res[nrow(CMCM.dep02MNAR.res)-1:0,]<0.05,1,mean,na.rm=T)
 
 # Independence case
 
