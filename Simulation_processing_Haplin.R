@@ -153,39 +153,6 @@ upper.bound = CMCM.indep01.res[hind,] + qnorm(0.975)*CMCM.indep01.res[hseind,]
 coverage.indep01.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
 power.indep01.haplin.vec = apply(CMCM.indep01.res[nrow(CMCM.indep01.res)-1:0,]<0.05,1,mean,na.rm=T)
 
-#MCAR 20%
-
-# Proportion of missing beta before removing outliers
-missing.beta.indep02 = apply(CMCM.indep02.res[bind,],1,function(vec) mean(is.na(vec)))
-
-    ## Identifying outlying estimates
-    par.mad <- apply(CMCM.indep02.res[bind,], 1, mad, na.rm=T)
-    par.med <- apply(CMCM.indep02.res[bind,], 1, median, na.rm=T) 
-    outliers.mat <- CMCM.indep02.res[bind,] < par.med - 3*sqrt(par.mad) | CMCM.indep02.res[bind,] > par.med + 3*sqrt(par.mad)
-    apply(outliers.mat, 1, sum, na.rm=T)
-    # Outliers are present only for prospective likelihood
-    outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
-    mean(outliers.vec)
-    # Setting outlying estimates and their SE to NA
-    CMCM.indep02.res[28:41,outliers.vec] = NA
-
-bias.indep02.vec = apply(CMCM.indep02.res[bind,],1,mean,na.rm=T) - beta.vec
-emp_se.indep02.vec = apply(CMCM.indep02.res[bind,],1,sd,na.rm=T)
-mean_se.indep02.vec = apply(CMCM.indep02.res[seind,],1,mean,na.rm=T)
-lower.bound = CMCM.indep02.res[bind,] - qnorm(0.975)*CMCM.indep02.res[seind,]
-upper.bound = CMCM.indep02.res[bind,] + qnorm(0.975)*CMCM.indep02.res[seind,]
-coverage.indep02.vec = apply(lower.bound<beta.vec & upper.bound>beta.vec,1,mean,na.rm=T)
-power.indep02.vec = apply(lower.bound[c(5:6,11:12,17:18,23:24),] > 0,1,mean,na.rm=T)
-
-# Haplin
-bias.indep02.haplin.vec = apply(CMCM.indep02.res[hind,],1,mean,na.rm=T) - hbeta.vec
-emp_se.indep02.haplin.vec = apply(CMCM.indep02.res[hind,],1,sd,na.rm=T)
-mean_se.indep02.haplin.vec = apply(CMCM.indep02.res[hseind,],1,mean,na.rm=T)
-lower.bound = CMCM.indep02.res[hind,] - qnorm(0.975)*CMCM.indep02.res[hseind,]
-upper.bound = CMCM.indep02.res[hind,] + qnorm(0.975)*CMCM.indep02.res[hseind,]
-coverage.indep02.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.indep02.haplin.vec = apply(CMCM.indep02.res[nrow(CMCM.indep02.res)-1:0,]<0.05,1,mean,na.rm=T)
-
 
 # Gathering the results in a matrix and writing to a file in a format to facilitate creating Table 1
 res = round(cbind(c(bias.indep01.vec,bias.indep01.haplin.vec),c(emp_se.indep01.vec,emp_se.indep01.haplin.vec),c(mean_se.indep01.vec,mean_se.indep01.haplin.vec),c(coverage.indep01.vec,coverage.indep01.haplin.vec),c(bias.dep01.vec,bias.dep01.haplin.vec),c(emp_se.dep01.vec,emp_se.dep01.haplin.vec),c(mean_se.dep01.vec,mean_se.dep01.haplin.vec),c(coverage.dep01.vec,coverage.dep01.haplin.vec)),3)
