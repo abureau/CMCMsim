@@ -8,6 +8,9 @@
 library(doParallel)
 RNGkind("L'Ecuyer-CMRG")
 
+# Setting the number of replicates
+nrep = 500
+
 # This sets the RNG seed used for the simulations reported in the manuscript
 set.seed(149)
 
@@ -131,5 +134,5 @@ N0 <- N-N1
 
   return(c(fit$est,fit$sd,fit1$est,fit1$sd,fit2.est,fit2.sd,haplin.est,haplin.sd,fit$est.log,fit$sd.log,haplin.gxe=haplin.gxe$gxe.test[,4]))
 }
-EST = mclapply(1:500,fitCMCM,mc.cores = cores)
+EST = mclapply(1:nrep,fitCMCM,mc.cores = cores)
 CMCM.dep02.res <- do.call(cbind, EST)
