@@ -33,8 +33,7 @@ missing.beta.dep01 = apply(CMCM.dep01.res[bind,],1,function(vec) mean(is.na(vec)
     # Outliers are present only for prospective likelihood
     outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
     mean(outliers.vec)
-    # Setting outlying estimates and their SE to NA
-    CMCM.dep01.res[28:41,outliers.vec] = NA
+    # We keep outlying estimates and their SE
 
 bias.dep01.vec = apply(CMCM.dep01.res[bind,],1,mean,na.rm=T) - beta.vec
 emp_se.dep01.vec = apply(CMCM.dep01.res[bind,],1,sd,na.rm=T)
@@ -66,8 +65,7 @@ missing.beta.dep02 = apply(CMCM.dep02.res[bind,],1,function(vec) mean(is.na(vec)
     # Outliers are present only for prospective likelihood
     outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
     mean(outliers.vec)
-    # Setting outlying estimates and their SE to NA
-    CMCM.dep02.res[28:41,outliers.vec] = NA
+    # We keep outlying estimates and their SE
 
 bias.dep02.vec = apply(CMCM.dep02.res[bind,],1,mean,na.rm=T) - beta.vec
 emp_se.dep02.vec = apply(CMCM.dep02.res[bind,],1,sd,na.rm=T)
@@ -98,8 +96,7 @@ apply(outliers.mat, 1, sum, na.rm=T)
 # Outliers are present only for prospective likelihood
 outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
 mean(outliers.vec)
-# Setting outlying estimates and their SE to NA
-CMCM.dep02MNAR.res[28:41,outliers.vec] = NA
+# We keep outlying estimates and their SE
 
 bias.dep02MNAR.vec = apply(CMCM.dep02MNAR.res[bind,],1,mean,na.rm=T) - beta.vec
 emp_se.dep02MNAR.vec = apply(CMCM.dep02MNAR.res[bind,],1,sd,na.rm=T)
@@ -133,8 +130,7 @@ missing.beta.indep01 = apply(CMCM.indep01.res[bind,],1,function(vec) mean(is.na(
     # Outliers are present only for prospective likelihood
     outliers.vec <- apply(outliers.mat, 2, any, na.rm=T)
     mean(outliers.vec)
-    # Setting outlying estimates and their SE to NA
-    CMCM.indep01.res[28:41,outliers.vec] = NA
+    # No outlying estimates 
 
 bias.indep01.vec = apply(CMCM.indep01.res[bind,],1,mean,na.rm=T) - beta.vec
 emp_se.indep01.vec = apply(CMCM.indep01.res[bind,],1,sd,na.rm=T)
