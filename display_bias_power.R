@@ -1,5 +1,6 @@
 #---- Libraries ----
 library(ggplot2) #For plots
+library(scales)
 library(tidyr)   #For data pivot and %>%
 library(dplyr)   #For mutate and %>%
 
@@ -42,10 +43,11 @@ emp_se$group <- factor(emp_se$group, levels = c("GM", "GC", "X", "GM x X", "GC x
 
 #---- Plots ----
 #Biais
-pdf(paste0(path, "bias_dep1.pdf"))
+pdf("bias_dep1.pdf")
 ggplot(data = bias) +
   geom_bar(mapping = aes(x = name, y = value, fill = ingroup), stat="identity", position = "dodge") +
-  ylim(c(min(bias$value), 0.25)) +
+  scale_y_continuous(limits = c(-0.25, 0.25),
+                     oob = rescale_none) +
   geom_hline(yintercept = 0) +
   labs(y = "", x = "", title = "", fill = "") +
   facet_grid(vars(group)) +
@@ -55,10 +57,11 @@ dev.off()
 
 
 #Empirical SE
-pdf(paste0(path, "emp_se_dep1.pdf"))
+pdf("emp_se_dep1.pdf")
 ggplot(data = emp_se) +
   geom_bar(mapping = aes(x = name, y = value, fill = ingroup), stat="identity", position = "dodge") +
-  ylim(c(0, max(emp_se$value))) +
+  scale_y_continuous(limits = c(0, 0.25),
+                     oob = rescale_none) +
   geom_hline(yintercept = 0) +
   labs(y = "", x = "", title = "", fill = "") +
   facet_grid(vars(group)) +
