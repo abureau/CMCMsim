@@ -1,0 +1,254 @@
+\documentclass{article}
+%\usepackage[colorlinks=true, urlcolor=citecolor, linkcolor=citecolor, citecolor=citecolor]{hyperref}
+\usepackage{amsmath,amsfonts,mathrsfs,ulem,xr,soul}
+%\usepackage[T1]{fontenc}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+\usepackage{lscape}
+\usepackage{setspace}
+\usepackage{mathrsfs}
+\usepackage{natbib}
+\newcommand{\hijmc}[1]{h_{ij#1}}
+\newcommand{\hijm}[1]{h_{ij#1}}
+\newcommand{\cjm}[1]{C_{j#1}}
+\newcommand{\qjm}[1]{q_{j#1}}
+\newcommand{\fjm}[1]{f_{#1}}
+\newcommand{\uim}[1]{u_{#1}}
+\newcommand{\euim}[1]{\widehat{u}_{#1}}
+\newcommand{\nm}[1]{N^{\ast}_{#1}}
+\newcommand{\nijmc}[1]{n_{ij#1}}
+\newcommand{\nijm}[1]{n_{ij#1}}
+\newcommand{\nijmb}[1]{\overline{n}_{ij#1}}
+\newcommand{\hijmcb}[1]{\overline{h}_{ij#1}}
+\newcommand{\hijmct}[2]{h_{ij#1\overline{#1}}}
+\newcommand{\fjmb}[1]{\tilde{f}_{j#1}}
+\newcommand{\qjmb}[1]{\tilde{q}_{j#1}}
+\newcommand{\nmb}[1]{\tilde{N}^{\ast}_{#1}}
+\newcommand{\hijmb}[1]{\tilde{h}_{ij#1}}
+\newcommand{\hijme}[1]{\tilde{h}_{ij#1}}
+\newcommand{\txp}[1]{\texttt{#1}}
+
+\externaldocument{compare_CMCM_revision2}
+
+%\articletype{Article Type}
+\raggedbottom
+
+\bibliographystyle{unsrtnat}
+
+\doublespacing
+\begin{document}
+
+\title{Methods and software to analyze gene-environment interactions under a case-mother - control-mother design with partially missing child genotype\\ Online supporting information}
+\author{Alexandre Bureau, Yuang Tian, Patrick Levallois, Yves Gigu\`ere, Jinbo Chen,\\ Hong Zhang}
+
+% \author[1,2]{Alexandre Bureau*}
+% \author[3]{Yuang Tian}
+% \author[1,4,5]{Patrick Levallois}
+% \author[5,6]{Yves Gigu\`ere}
+% \author[7]{Jinbo Chen} 
+% \author[8]{Hong Zhang}
+
+%\authormark{ALEXANDRE BUREAU \textsc{et al}}
+
+% \address[1]{\orgdiv{D\'epartement de m\'edecine sociale et pr\'eventive}, \orgname{Universit\'e Laval}, \orgaddress{Quebec City, \state{Qu\'ebec}, \country{Canada}}}
+% \address[2]{\orgname{Centre de recherche CERVO}, \orgaddress{Quebec City, \state{Qu\'ebec}, \country{Canada}}}
+% \address[3]{\orgname{Shanghai Center for Mathematical Sciences}, \orgname{Fudan University},\orgaddress{Shanghai, \country{China}}}
+% \address[4]{\orgdiv{Direction de la sant\'e environnementale et de la toxicologie}, \orgname{Institut national de sant\'e publique (INSPQ)}, \orgaddress{Quebec City, \state{Qu\'ebec}, \country{Canada}}}
+% \address[5]{\orgname{Centre de recherche du CHU de Qu\'ebec}, \orgaddress{Quebec City, \state{Qu\'ebec}, \country{Canada}}}
+% \address[6]{\orgdiv{D\'epartement de biologie mol\'eculaire, de biochimie m\'edicale et de pathologie}, \orgname{Universit\'e Laval}, \orgaddress{Quebec City, \state{Qu\'ebec}, \country{Canada}}}
+% \address[7]{\orgdiv{Department of Biostatistics and Epidemiology, Perelman School of Medicine}, \orgname{University of Pennsylvania}, \orgaddress{Philadelphia, \state{PA}, \country{U.S.A.}}}
+% \address[8]{\orgdiv{Department of Statistics and Finance, School of Management}, \orgname{University of Science and Technology of China}, \orgaddress{Hefei, \state{Anhui}, \country{China}}}
+% % \\[2pt]
+% \corres{*Alexandre Bureau, D\'epartement de m\'edecine sociale et pr\'eventive, Universit\'e Laval \email{alexandre.bureau@fmed.ulaval.ca}}
+
+% Running headers of paper:
+%\markboth%
+% First field is the short list of authors
+%{A. Bureau and others}
+% Second field is the short title of the paper
+%{Methods and software for case-mother control-mother design}
+
+% Add a footnote for the corresponding author if one has been
+% identified in the author list
+%\footnotetext{To whom correspondence should be addressed.}
+
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+
+\section{Review of software}
+\label{software}
+
+This section reviews \proglang{R} software packages and functions implementing analysis approaches for case-mother - control-mother data.
+
+\subsection{R Package \code{SPmlficmcm}}
+Makao and Bureau \cite{makao2015} 
+described the \proglang{R} package \pkg{SPmlficmcm}  implementing semi-parametric maximum likelihood estimation for the prospective likelihood when the data are complete and when offspring genotype is missing for a subset of subjects. The model fitting function \code{Spmlficmcm} has arguments similar to other such functions in \proglang{R}, with a \code{formula} object to specify the model and a \code{data} argument to specify the data frame containing the variables in the model. Users have the choice to provide either the cases and non-cases population totals $(N_0,N_1)$ in the vector \code{N} or the disease prevalence $f$ in the argument \code{p} if $N_0$ and $N_1$ are unavailable. The program then assumes large values of $N_0$ and $N_1$ satisfying the prevalence constraint ${N_1 \over N_0 + N_1} = f$. The matrix "MatR" of the estimates and their standard errors with model terms as row names is  part of the object returned by \code{Spmlficmcm}. Makao and Bureau \cite{makao2015} 
+provide additional details on \code{Spmlficmcm} arguments and the object it returns.
+
+\subsection{R Package \code{Haplin}}
+
+Gjerdevik et al. \cite{Gjerdevik2018} described the \proglang{R} package \pkg{Haplin} which includes the \code{haplinStrat} function to fit log-linear models to case-triad data with stratification on an environmental covariate. Case-mother - control-mother designs are handled by treating the father genotype as missing data, leading to the model with the constraints described by Shi et al. \cite{shi2008} in each stratum of a discrete covariate $X$ when maternal and child genotypes are observed. Likelihood maximization with an expectation-maximization algorithm deals with missing paternal and partially missing child genotypes. Since usage of the \pkg{Haplin} package is explained elsewhere \cite{Gjerdevik2018}, we focus on the options of the \code{haplinStrat} function required for analyzing case-mother - control-mother data:
+
+\begin{itemize}
+\item[design] Must be set to "cc.triad" to reflect the presence of cases and controls with parents (the mother only in this case).
+\item[use.missing] Must be set to \code{TRUE} to handle missing paternal and partially missing child genotypes.
+\item[maternal] Must be set to \code{TRUE} if one wants to estimate effects of $g^M$.
+\item[ccvar] Column number of the case-control status $Y$
+\item[strata] Column number of the environmental covariate $X$ on which to stratify.
+\item[response] Setting to \code{mult} will estimate multiplicative (log-additive) effects which is the usual behavior of \proglang{R} regression functions used in all analyses in this article. The default \code{free} will instead estimate distinct effects for heterozygotes and homozygote rare genotypes.
+\end{itemize}
+
+The data frame read by the preprocessing \code{genDataRead} function must include variables for the paternal genotypes, which are set entirely to \code{NA} under the case-mother - control-mother design. The \code{gxe} function applied to the object returned by \code{haplinStrat} will test the null hypothesis of homogeneity of the $g^M$ and $g^C$ effects across strata of $X$. When $X$ is ordinal or quantitative, the 1 degree-of-freedom trend test is similar to testing $\beta_{p+3} = 0$ or $\beta_{p+4} = 0$ in model (1%\ref{eq1}
+).\\
+
+In addition to model fitting functions, Gjerdevik et al. \cite{Gjerdevik2020} recently described functions for power and sample size calculations in Haplin.
+
+\subsection{R functions \code{CCMO.na} and \code{CCMO.dep}}
+Estimation by maximization of the modified retrospective likelihood is implemented in the \proglang{R} functions \code{CCMO.na} for the unspecified distribution of  $G^{M},X$, and \code{CCMO.dep} for the double-additive logistic model of the maternal genotype~(4%\ref{eq4}
+). The two functions share the following required argument
+
+\begin{itemize}
+\item[Y] Disease outcome variable (1 = affected, 0=unaffected)
+\item[gm] Variable containing the number of minor alleles of the mother
+\item[gc] Variable containing the number of minor alleles of the child
+\item[Xm] Matrix of covariates involved in product terms with the genotype of the mother (can be a single variable in a vector)
+\item[Xc] Matrix of covariates involved in product terms with the genotype of the child (can be a single variable in a vector)
+\item[Xo] Matrix of all non-genetic covariates in the model (including those involved in product terms with the genotype variables).
+\item[f] Disease prevalence.
+\end{itemize}
+
+The function \code{CCMO.dep} has the additional \code{Xgm} argument: a matrix of covariates involved in the double-additive logistic model of the maternal genotype (4%\ref{eq4}
+). The use of this model enables the handling of missing maternal genotype in \code{gm} through the likelihood by \code{CCMO.dep}. Both \code{CCMO.na} and \code{CCMO.dep} allow missing values in the child genotype \code{gc}, but not in covariates.\\
+% The function \code{CCMO.dep} allows} missing values in either the \code{gm} or \code{gc} genotypic variables, while the function \code{CCMO.na} only allows \code{gc} to be missing. Data on all other covariates need to be complete with either function.\\
+
+The object returned by the functions \code{CCMO.na} and \code{CCMO.dep} contains the log-likelihood \code{logL}, the vector of parameter estimates \code{est} and their estimated standard errors \code{sd}, as well as the matrix of estimated variance-covariance of the parameter estimates \code{Matv}. Regression coefficients are in the following order: intercept, main effect of mother genotype, main effect of child genotype, main effect of variables interacting with genotypes, main effect of variables NOT interacting with genotypes, interaction terms involving the mother genotype, interaction terms involving the child genotype. The corresponding coefficient estimates \code{est.log} and standard errors \code{sd.log} from standard logistic regression are included for comparison.
+
+
+\section{ Illustration of software implementations on simulated data}
+
+We now illustrate the application of the software on a simulated data set similar to the one used in the case study. First we load the empirical distribution in the control sample of a subset of variables from the case study data: rs3813867 C allele count in the child and in the mother, TTHM exposure in the fourth quartile (1=yes, 0=no), prepregnancy mother's BMI category (< 19.8,19.8-25.9,26-29.9 and >29.9) and multi-parity (1=yes, 0=no).
+
+\begin{small}
+<<Loading data>>=
+download.file("https://github.com/abureau/CMCMsim/raw/main/data/ctrl.RData","ctrl.RData")
+load("ctrl.RData")
+@
+\end{small}
+
+As an illustration of the data, we assess the association between maternal rs3813867 C allele and TTHM exposure in the fourth quartile using all controls:
+
+\begin{small}
+<<GxE association>>=
+library(epitools)
+tab = apply(ctrl.dat,c(3,1),sum)
+epitab(tab)
+@
+\end{small}
+
+Next, we simulate a population with the same number of births as in the Quebec City area during the study period (14,630), assuming the control sample without missing child genotype is representative of that population. We use a matrix with all possible covariate levels to recreate a dataset with individual variable values.
+
+\begin{small}
+<<Sim pop>>=
+set.seed(100)
+n_ctrl_noNA = sum(ctrl_noNA.dat)
+ctrl_prop_noNA = ctrl_noNA.dat/n_ctrl_noNA
+pop.obs = rmultinom(1,14630,as.vector(ctrl_prop_noNA))
+lev_noNA.dat = cbind((0:63)%%2,(0:63)%/%2%%2,(0:63)%/%4%%2,(0:63)%/%8%%4,(0:63)%/%32)
+pop.dat = data.frame(lev_noNA.dat[rep(1:nrow(lev_noNA.dat),pop.obs),])
+names(pop.dat) = c("gm","gc","TTHM","BMI","multipar")
+@
+\end{small}
+
+We manually recode BMI using three indicator variables, as not all analysis functions handle \proglang{R} \code{factors}.
+
+\begin{small}
+<<Recode BMI>>=
+pop.dat$BMI0 = ifelse(pop.dat$BMI==0,1,0)
+pop.dat$BMI2 = ifelse(pop.dat$BMI==2,1,0)
+pop.dat$BMI3 = ifelse(pop.dat$BMI==3,1,0)
+pop.dat$BMI = NULL
+names(pop.dat)
+@
+\end{small}
+It is now time to simulate the outcome in the entire population. We use the estimates from the modified retrospective likelihood with unspecified distribution of $G^{M},X$ on the actual data as coefficents to simulate the outcome.
+
+\begin{small}
+<<Simulate outcome>>=
+download.file("https://github.com/abureau/CMCMsim/raw/main/data/CCMOcov.RS3813867complet.RData",
+              "CCMOcov.RS3813867complet.RData")
+load("CCMOcov.RS3813867complet.RData")
+# Constructing the design matrix
+Xmat = as.matrix(cbind(1,pop.dat[,c(1:3,7:4)],pop.dat$gm*pop.dat$TTHM,pop.dat$gc*pop.dat$TTHM))
+# Linear predictor
+tmp <- Xmat%*%CCMOcov.RS3813867complet$est[1:10]
+# Case probability
+p <- 1/(1+exp(-tmp))
+r <- runif(14630)
+pop.dat$outc <- ifelse(r<p,1,0)
+N=table(pop.dat$outc)
+N
+@
+\end{small}
+
+Then, we load the software code.
+\begin{small}
+<<Loading code>>=
+library("SPmlficmcm")
+source("https://github.com/yatian20/CCMO.na/blob/main/R/CCMO.na.R?raw=true")
+source("https://github.com/yatian20/CCMO.na/blob/main/R/CCMO.dep.R?raw=true")
+@
+\end{small}
+
+We are now ready to draw a case-control sample from the simulated population.
+\begin{small}
+<<Simulating complete data>>=
+pop.dat$obs=1:nrow(pop.dat)
+n0 <- 1207; n1 <- 321
+study.dat <- SeltcEch("outc", n1, n0, "obs", pop.dat)
+@
+\end{small}
+Next, we delete 10\% of case genotypes and 6\% of control genotypes, the proportion observed in the case study.
+\begin{small}
+<<Creation missing data>>=
+## Creation of missing data on the offspring genotype 
+r = runif(n1)
+study.dat$gc[study.dat$outc==1][r<0.1] = NA
+r = runif(n0)
+study.dat$gc[study.dat$outc==0][r<0.06] = NA
+@
+\end{small}
+
+Finally, we estimate the correctly-specified model using the \code{Spmlficmcm}, \code{CCMO.na} and \code{CCMO.dep} functions. \code{Haplin} was not applied to this simulated dataset and the case study dataset since it does not allow to adjust for covariates such as \code{X2}. Notice that for \code{CCMO.na} and \code{CCMO.dep}, variable names must be specified with the dataframe where they are found. One way to avoid this would be to attach the dataframe \code{study.dat} to the \proglang{R} search path. In the code below, estimates of the model coefficients and their estimated standard errors are gathered in a data frame. Columns with headers \texttt{"Estimate"} and \texttt{"Std.Error"} contain results from the prospective likelihood, columns with the \texttt{"RLNP"} prefix contain results from the retrospective likelihood with the unspecified distribution of $G^{M},X$ columns with the \texttt{"RLDA"} prefix contain results from the retrospective likelihood with the double additive model and columns with the \texttt{"LR"} prefix contain results from logistic regression. As can be seen from the display of this data frame below, estimates from the two estimation methods exploiting the constraints of the genetic and environmental variables relationships are close to the true values. Both methods also produced similar estimated standard errors, generally smaller than those from logistic regression, which discards entirely the observations with missing child genotype. The good behaviour of the prospective likelihood contrasts with the high proportion of failures in the simulation study reported in Table 2%~\ref{tab1}. 
+This is due to the different distribution of the covariates. With the discrete covariates simulated here, maximization failures or outlying estimates were rare ($4\%$) and estimates had satisfactory statistical properties (see Table 2 in \cite{makao2015}).
+%Makao and Bureau \cite{makao2015}). 
+
+
+\begin{small}
+<<Estimation of the parameters>>=
+fl <- outc ~ gm + gc + TTHM + BMI3 + BMI2 + BMI0 + multipar + TTHM:gm + TTHM:gc 
+## Estimation of the parameters (with missing data)
+## Prospective likelihood
+Rswm <- Spmlficmcm(fl, N, "gm", "gc", study.dat, 2)
+## Retrospective likelihood, unspecified distribution of  G^M,X (function CCMO.na)
+prev  <-  N[2] / sum(N)
+Rpwm <- CCMO.na(Y=study.dat$outc,gm=study.dat$gm,gc=study.dat$gc,Xm=study.dat$TTHM,
+                Xc=study.dat$TTHM,Xo=as.matrix(study.dat[,c("TTHM","BMI3", "BMI2", "BMI0", "multipar")]),
+                f=prev,ind=FALSE)
+## Retrospective likelihood, double-additive model for Pr(G^M | X) (function CCMO.dep)
+Rpda <- CCMO.dep(Y=study.dat$outc,gm=study.dat$gm,gc=study.dat$gc,Xm=study.dat$TTHM,
+                Xc=study.dat$TTHM,Xgm=study.dat$TTHM,
+                Xo=as.matrix(study.dat[,c("TTHM","BMI3", "BMI2", "BMI0", "multipar")]),
+                f=prev,HWE=TRUE)
+
+## Table of estimates and standard errors
+round(data.frame(Beta=CCMOcov.RS3813867complet$est[1:10],Rswm[["MatR"]][1:10,],
+                 RLNPest=Rpwm$est[1:10],RLNPsd=Rpwm$sd[1:10],RLDAest=Rpda$est[1:10],RLDAsd=Rpda$sd[1:10],
+                 LRest=Rpwm$est.log,LRsd=Rpwm$sd.log), digits = 3)
+@
+\end{small}
+
+\bibliography{jss1252,compare_CMCM,Levallois} 
+
+\end{document}
