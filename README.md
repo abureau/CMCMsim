@@ -1,6 +1,6 @@
 # CMCMsim: Analysis of case-mother - control-mother simulated data
 
-This repository contains the code to reproduce the simulation results presented in Tables 1 and 2 and Figures 1 and 2 of the manuscript
+This repository contains the code to reproduce the simulation results presented in Tables 2 and 3 and Figures 1 and 2 and the Sweave document and R objects (in the folder Supplement) to create the online supplement of the manuscript 
 
 **Methods and software to analyze gene-environment interactions under a case-mother control-mother design with partially missing child genotype**
 
@@ -26,3 +26,4 @@ by Alexandre Bureau, Yuang Tian, Patrick Levallois, Yves Giguere, Jinbo Chen, Ho
 
   This will create the text file res_power_raw.tex which was the basis for Table 2 and the pdf files bias_dep1.pdf and emp_se_dep1.pdf which are Figures 1 and 2 of the manuscript.
   
+- To create the online supplement, compile the file compare_CMCM_revision2_supp.Rnw in R or R Studio.
