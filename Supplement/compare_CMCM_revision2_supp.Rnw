@@ -33,7 +33,7 @@
 %\articletype{Article Type}
 \raggedbottom
 
-\bibliographystyle{unsrtnat}
+\bibliographystyle{plain}
 
 \doublespacing
 \begin{document}
