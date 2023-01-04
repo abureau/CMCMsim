@@ -15,7 +15,7 @@ bind = c(1:6,14:19,28:33,102:107)
 # Indices of standard error estimates
 seind = c(8:13,22:27,35:40,108:113)
 # Indices of Haplin estimates and standard error estimates
-hind = c(50:51,55:56,60:61,65:66,70:71)
+hind = c(51:50,56:55,61:60,66:65,71:70)
 hseind = hind + 30
 
 # Dependence case
@@ -51,7 +51,7 @@ mean_se.dep01null.haplin.vec = apply(CMCM.dep01null.res[hseind,],1,mean,na.rm=T)
 lower.bound = CMCM.dep01null.res[hind,] - qnorm(0.975)*CMCM.dep01null.res[hseind,]
 upper.bound = CMCM.dep01null.res[hind,] + qnorm(0.975)*CMCM.dep01null.res[hseind,]
 coverage.dep01null.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.dep01null.haplin.vec = apply(CMCM.dep01null.res[nrow(CMCM.dep01null.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.dep01null.haplin.vec = apply(CMCM.dep01null.res[nrow(CMCM.dep01null.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 # MNAR
 # Proportion of missing beta before removing outliers
@@ -83,7 +83,7 @@ mean_se.dep01nullMNAR.haplin.vec = apply(CMCM.dep01nullMNAR.res[hseind,],1,mean,
 lower.bound = CMCM.dep01nullMNAR.res[hind,] - qnorm(0.975)*CMCM.dep01nullMNAR.res[hseind,]
 upper.bound = CMCM.dep01nullMNAR.res[hind,] + qnorm(0.975)*CMCM.dep01nullMNAR.res[hseind,]
 coverage.dep01nullMNAR.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.dep01nullMNAR.haplin.vec = apply(CMCM.dep01nullMNAR.res[nrow(CMCM.dep01nullMNAR.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.dep01nullMNAR.haplin.vec = apply(CMCM.dep01nullMNAR.res[nrow(CMCM.dep01nullMNAR.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 # Independence case
 
@@ -116,7 +116,7 @@ mean_se.indep01null.haplin.vec = apply(CMCM.indep01null.res[hseind,],1,mean,na.r
 lower.bound = CMCM.indep01null.res[hind,] - qnorm(0.975)*CMCM.indep01null.res[hseind,]
 upper.bound = CMCM.indep01null.res[hind,] + qnorm(0.975)*CMCM.indep01null.res[hseind,]
 coverage.indep01null.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.indep01null.haplin.vec = apply(CMCM.indep01null.res[nrow(CMCM.indep01null.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.indep01null.haplin.vec = apply(CMCM.indep01null.res[nrow(CMCM.indep01null.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 # Gathering the results in a matrix and writing to a file in a format to facilitate creating Table 1
 res = round(cbind(c(bias.indep01null.vec,bias.indep01null.haplin.vec),c(emp_se.indep01null.vec,emp_se.indep01null.haplin.vec),c(mean_se.indep01null.vec,mean_se.indep01null.haplin.vec),c(coverage.indep01null.vec,coverage.indep01null.haplin.vec),c(bias.dep01null.vec,bias.dep01null.haplin.vec),c(emp_se.dep01null.vec,emp_se.dep01null.haplin.vec),c(mean_se.dep01null.vec,mean_se.dep01null.haplin.vec),c(coverage.dep01null.vec,coverage.dep01null.haplin.vec)),3)

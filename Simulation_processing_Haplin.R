@@ -15,7 +15,7 @@ bind = c(1:6,14:19,28:33,102:107)
 # Indices of standard error estimates
 seind = c(8:13,22:27,35:40,108:113)
 # Indices of Haplin estimates and standard error estimates
-hind = c(50:51,55:56,60:61,65:66,70:71)
+hind = c(51:50,56:55,61:60,66:65,71:70)
 hseind = hind + 30
 
 # Dependence case
@@ -50,7 +50,7 @@ mean_se.dep01.haplin.vec = apply(CMCM.dep01.res[hseind,],1,mean,na.rm=T)
 lower.bound = CMCM.dep01.res[hind,] - qnorm(0.975)*CMCM.dep01.res[hseind,]
 upper.bound = CMCM.dep01.res[hind,] + qnorm(0.975)*CMCM.dep01.res[hseind,]
 coverage.dep01.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.dep01.haplin.vec = apply(CMCM.dep01.res[nrow(CMCM.dep01.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.dep01.haplin.vec = apply(CMCM.dep01.res[nrow(CMCM.dep01.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 #MCAR 20%
 
@@ -82,7 +82,7 @@ mean_se.dep02.haplin.vec = apply(CMCM.dep02.res[hseind,],1,mean,na.rm=T)
 lower.bound = CMCM.dep02.res[hind,] - qnorm(0.975)*CMCM.dep02.res[hseind,]
 upper.bound = CMCM.dep02.res[hind,] + qnorm(0.975)*CMCM.dep02.res[hseind,]
 coverage.dep02.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.dep02.haplin.vec = apply(CMCM.dep02.res[nrow(CMCM.dep02.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.dep02.haplin.vec = apply(CMCM.dep02.res[nrow(CMCM.dep02.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 # MNAR 20%
 # Proportion of missing beta before removing outliers
@@ -147,7 +147,7 @@ mean_se.indep01.haplin.vec = apply(CMCM.indep01.res[hseind,],1,mean,na.rm=T)
 lower.bound = CMCM.indep01.res[hind,] - qnorm(0.975)*CMCM.indep01.res[hseind,]
 upper.bound = CMCM.indep01.res[hind,] + qnorm(0.975)*CMCM.indep01.res[hseind,]
 coverage.indep01.haplin.vec = apply(lower.bound<hbeta.vec & upper.bound>hbeta.vec,1,mean,na.rm=T)
-power.indep01.haplin.vec = apply(CMCM.indep01.res[nrow(CMCM.indep01.res)-1:0,]<0.05,1,mean,na.rm=T)
+power.indep01.haplin.vec = apply(CMCM.indep01.res[nrow(CMCM.indep01.res)-0:1,]<0.05,1,mean,na.rm=T)
 
 
 # Gathering the results in a matrix and writing to a file in a format to facilitate creating Table 1
