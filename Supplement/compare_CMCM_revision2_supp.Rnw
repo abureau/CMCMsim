@@ -7,7 +7,7 @@
 \usepackage{lscape}
 \usepackage{setspace}
 \usepackage{mathrsfs}
-\usepackage{natbib}
+%\usepackage{natbib}
 \newcommand{\hijmc}[1]{h_{ij#1}}
 \newcommand{\hijm}[1]{h_{ij#1}}
 \newcommand{\cjm}[1]{C_{j#1}}
@@ -33,7 +33,7 @@
 %\articletype{Article Type}
 \raggedbottom
 
-\bibliographystyle{plain}
+\bibliographystyle{aichej}
 
 \doublespacing
 \begin{document}
